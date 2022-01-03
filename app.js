@@ -46,8 +46,6 @@ export default class Sketch {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.time = 0;
 
-    this.isPlaying = true;
-
     this.imgUrls = [img1.pathname, img2.pathname, img3.pathname];
     this.imgTextures = this.imgUrls.map((url) =>
       new THREE.TextureLoader().load(url)
@@ -77,22 +75,6 @@ export default class Sketch {
     this.height = this.container.offsetHeight;
     this.renderer.setSize(this.width, this.height);
     this.camera.aspect = this.width / this.height;
-
-    // image cover (?)
-    // this.imageAspect = 853 / 1280;
-    // let a1, a2;
-    // if (this.height / this.width > this.imageAspect) {
-    //   a1 = (this.width / this.height) * this.imageAspect;
-    //   a2 = 1;
-    // } else {
-    //   a1 = 1;
-    //   a2 = this.height / this.width / this.imageAspect;
-    // }
-    // this.material.uniforms.resolution.value.x = this.width;
-    // this.material.uniforms.resolution.value.y = this.height;
-    // this.material.uniforms.resolution.value.z = a1;
-    // this.material.uniforms.resolution.value.w = a2;
-
     this.camera.updateProjectionMatrix();
   }
 
@@ -121,19 +103,7 @@ export default class Sketch {
     this.scene.add(this.plane);
   }
 
-  stop() {
-    this.isPlaying = false;
-  }
-
-  play() {
-    if (!this.isPlaying) {
-      this.render();
-      this.isPlaying = true;
-    }
-  }
-
   render() {
-    if (!this.isPlaying) return;
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
     this.renderer.render(this.scene, this.camera);
