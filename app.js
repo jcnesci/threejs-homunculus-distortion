@@ -5,10 +5,9 @@ import fragment from "./shaders/fragment.glsl";
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import * as dat from "dat.gui";
 // import gsap from "gsap";
-// const image = new URL(
-//   "./sascha-bosshard-VmJDcG0rhDQ-unsplash.jpg",
-//   import.meta.url
-// );
+const img1 = new URL("./img/1.jpeg", import.meta.url);
+const img2 = new URL("./img/2.jpeg", import.meta.url);
+const img3 = new URL("./img/3.jpeg", import.meta.url);
 
 export default class Sketch {
   constructor(options) {
@@ -48,6 +47,11 @@ export default class Sketch {
     this.time = 0;
 
     this.isPlaying = true;
+
+    this.imgUrls = [img1.pathname, img2.pathname, img3.pathname];
+    this.imgTextures = this.imgUrls.map((url) =>
+      new THREE.TextureLoader().load(url)
+    );
 
     this.addObjects();
     this.resize();
@@ -100,7 +104,7 @@ export default class Sketch {
       side: THREE.DoubleSide,
       uniforms: {
         time: { value: 0 },
-        uTexture: { value: 0 },
+        uTexture: { value: this.imgTextures[0] },
         // uTexture: { value: new THREE.TextureLoader().load(image.pathname) },
         resolution: { value: new THREE.Vector4() },
       },
