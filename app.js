@@ -2,12 +2,21 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import vertex from "./shaders/vertex.glsl";
 import fragment from "./shaders/fragment.glsl";
+
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 // import * as dat from "dat.gui";
 // import gsap from "gsap";
+
 const img1 = new URL("./img/1.jpeg", import.meta.url);
 const img2 = new URL("./img/2.jpeg", import.meta.url);
 const img3 = new URL("./img/3.jpeg", import.meta.url);
+
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+
+import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
+import { DotScreenShader } from "three/examples/jsm/shaders/DotScreenShader.js";
 
 export default class Sketch {
   constructor(options) {
@@ -51,11 +60,27 @@ export default class Sketch {
       new THREE.TextureLoader().load(url)
     );
 
+    this.initPost();
     this.addObjects();
     this.resize();
     this.render();
     this.setupResize();
     // this.settings();
+  }
+
+  initPost() {
+    // postprocessing
+
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+
+    const effect1 = new ShaderPass(DotScreenShader);
+    effect1.uniforms["scale"].value = 4;
+    this.composer.addPass(effect1);
+
+    const effect2 = new ShaderPass(RGBShiftShader);
+    effect2.uniforms["amount"].value = 0.0015;
+    this.composer.addPass(effect2);
   }
 
   settings() {
@@ -115,7 +140,8 @@ export default class Sketch {
   render() {
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     window.requestAnimationFrame(this.render.bind(this));
   }
 }
