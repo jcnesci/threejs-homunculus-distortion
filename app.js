@@ -19,7 +19,7 @@ export default class Sketch {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(this.width, this.height);
-    this.renderer.setClearColor(0xffffff, 1);
+    this.renderer.setClearColor(0x000000, 1);
     this.renderer.physicallyCorrectLights = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
 
@@ -97,10 +97,19 @@ export default class Sketch {
       fragmentShader: fragment,
     });
 
-    this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    //NB: 1.9 is image's aspect ratio, hardcoded here instead of remapping UVs in shader, easier.
+    this.geometry = new THREE.PlaneGeometry(1.9 / 2, 1 / 2, 1, 1);
 
-    this.plane = new THREE.Mesh(this.geometry, this.material);
-    this.scene.add(this.plane);
+    this.meshes = [];
+
+    this.imgTextures.forEach((t, i) => {
+      let material = this.material.clone();
+      material.uniforms.uTexture.value = t;
+      let mesh = new THREE.Mesh(this.geometry, material);
+      this.scene.add(mesh);
+      mesh.position.x = i - 1; //NB: simple positioning, not ideal.
+      this.meshes.push(mesh);
+    });
   }
 
   render() {
