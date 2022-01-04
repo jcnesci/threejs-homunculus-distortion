@@ -140,9 +140,9 @@ export default class Sketch {
   render() {
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
+    window.requestAnimationFrame(this.render.bind(this));
     // this.renderer.render(this.scene, this.camera);
     this.composer.render();
-    window.requestAnimationFrame(this.render.bind(this));
   }
 }
 
