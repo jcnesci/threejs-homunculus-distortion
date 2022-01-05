@@ -16,7 +16,8 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
-import { DotScreenShader } from "three/examples/jsm/shaders/DotScreenShader.js";
+// import { DotScreenShader } from "three/examples/jsm/shaders/DotScreenShader.js";
+import { CustomPass } from "./js/CustomPass.js";
 
 export default class Sketch {
   constructor(options) {
@@ -74,7 +75,8 @@ export default class Sketch {
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
 
-    const effect1 = new ShaderPass(DotScreenShader);
+    // const effect1 = new ShaderPass(DotScreenShader);
+    const effect1 = new ShaderPass(CustomPass);
     effect1.uniforms["scale"].value = 4;
     this.composer.addPass(effect1);
 
