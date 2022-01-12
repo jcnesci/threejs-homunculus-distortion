@@ -58,12 +58,17 @@ const CustomPass = {
 
 			// gl_FragColor = vec4( vec3( average * 10.0 - 5.0 + pattern() ), color.a );
 
-			vec2 centeredUV = 2. * vUv - vec2(1.);
-			vec2 newUV = vUv + centeredUV*vec2(1.,0.);
-			newUV.x = mix(vUv.x, length(centeredUV), progress);
+			vec2 newUV = vUv;
+
+			// Add incremental variation to p (dist to center) for interesting effects...
+			vec2 p = 2. * vUv - vec2(1.);
+			p += 0.1*cos(3.*p.yx + time + vec2(1.2,3.4));
+
+			newUV.x = mix(vUv.x, length(p), progress);
 			newUV.y = mix(vUv.y, 0., progress);
 			vec4 color = texture2D( tDiffuse, newUV );
 			gl_FragColor = color;
+			gl_FragColor = vec4(length(p), 0., 0., 1.);
 		}`,
 };
 
