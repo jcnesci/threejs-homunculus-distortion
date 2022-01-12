@@ -4,7 +4,7 @@ import vertex from "./shaders/vertex.glsl";
 import fragment from "./shaders/fragment.glsl";
 
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-// import * as dat from "dat.gui";
+import * as dat from "dat.gui";
 // import gsap from "gsap";
 
 const img1 = new URL("./img/1.jpeg", import.meta.url);
@@ -65,7 +65,7 @@ export default class Sketch {
     this.resize();
     this.render();
     this.setupResize();
-    // this.settings();
+    this.settings();
   }
 
   initPost() {
@@ -136,6 +136,7 @@ export default class Sketch {
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
     this.effect1.uniforms["time"].value = this.time;
+    this.effect1.uniforms["progress"].value = this.settings.progress;
     window.requestAnimationFrame(this.render.bind(this));
     // this.renderer.render(this.scene, this.camera);
     this.composer.render();

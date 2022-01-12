@@ -8,7 +8,8 @@ import { Vector2 } from "three";
 
 const CustomPass = {
   uniforms: {
-    time: { value: 0.0 },
+    time: { value: 0 },
+    progress: { value: 0 },
 		tDiffuse: { value: null },
     tSize: { value: new Vector2(256, 256) },
     center: { value: new Vector2(0.5, 0.5) },
@@ -29,13 +30,13 @@ const CustomPass = {
 
   fragmentShader: /* glsl */ `
 
+		uniform float time;
+		uniform float progress;
 		uniform vec2 center;
 		uniform float angle;
 		uniform float scale;
 		uniform vec2 tSize;
-
 		uniform sampler2D tDiffuse;
-
 		varying vec2 vUv;
 
 		float pattern() {
@@ -51,14 +52,18 @@ const CustomPass = {
 
 		void main() {
 
-			vec4 color = texture2D( tDiffuse, vUv );
+			// vec4 color = texture2D( tDiffuse, vUv );
 
-			float average = ( color.r + color.g + color.b ) / 3.0;
+			// float average = ( color.r + color.g + color.b ) / 3.0;
 
-			gl_FragColor = vec4( vec3( average * 10.0 - 5.0 + pattern() ), color.a );
+			// gl_FragColor = vec4( vec3( average * 10.0 - 5.0 + pattern() ), color.a );
 
-			vec2 centered = 2. * vUv - vec2(1.);
-			gl_FragColor = vec4(length(centered), 0., 0., 1.);
+			vec2 centeredUV = 2. * vUv - vec2(1.);
+			vec2 newUV = vUv + centeredUV*vec2(1.,0.);
+			newUV.x = mix(vUv.x, length(centeredUV), progress);
+			newUV.y = mix(vUv.y, 0., progress);
+			vec4 color = texture2D( tDiffuse, newUV );
+			gl_FragColor = color;
 		}`,
 };
 
