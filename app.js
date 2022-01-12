@@ -81,9 +81,11 @@ export default class Sketch {
   settings() {
     this.settings = {
       progress: 0,
+      scale: 1,
     };
     this.gui = new dat.GUI();
     this.gui.add(this.settings, "progress", 0, 1, 0.01);
+    this.gui.add(this.settings, "scale", 0, 10, 0.1);
   }
 
   setupResize() {
@@ -139,6 +141,7 @@ export default class Sketch {
     this.material.uniforms.time.value = this.time;
     this.effect1.uniforms["time"].value = this.time;
     this.effect1.uniforms["progress"].value = this.settings.progress;
+    this.effect1.uniforms["scale"].value = this.settings.scale;
     window.requestAnimationFrame(this.render.bind(this));
     // this.renderer.render(this.scene, this.camera);
     this.composer.render();
