@@ -74,9 +74,8 @@ export default class Sketch {
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
 
-    const effect1 = new ShaderPass(CustomPass);
-    effect1.uniforms["scale"].value = 1;
-    this.composer.addPass(effect1);
+    this.effect1 = new ShaderPass(CustomPass);
+    this.composer.addPass(this.effect1);
   }
 
   settings() {
@@ -136,6 +135,7 @@ export default class Sketch {
   render() {
     this.time += 0.05;
     this.material.uniforms.time.value = this.time;
+    this.effect1.uniforms["time"].value = this.time;
     window.requestAnimationFrame(this.render.bind(this));
     // this.renderer.render(this.scene, this.camera);
     this.composer.render();
