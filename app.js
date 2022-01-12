@@ -1,3 +1,6 @@
+// IDEAS:
+// - animate progress with GSAP?
+
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import vertex from "./shaders/vertex.glsl";
@@ -17,6 +20,33 @@ import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 import { CustomPass } from "./js/CustomPass.js";
+
+//TEST: use Theatre.js as replacement for dat.gui and for creating animations...!
+import {getProject, types as t} from "@theatre/core"
+import studio from "@theatre/studio"
+// initialize the studio so the editing tools will show up on the screen
+studio.initialize()
+// create a project
+const proj = getProject(
+  // the ID of the project is "My first project"
+  "First project"
+)
+// create a sheet
+const sheet = proj.sheet(
+  // Our sheet is identified as "Scene"
+  "Scene"
+)
+// create an object
+const distortion = sheet.object(
+  // The object's key is "Fist object"
+  "Distortion",
+  // These are the object's default values (and as we'll later learn, its props types)
+  {
+    // we pick our first props's name to be "foo". It's default value is 0.
+    // Theatre will determine that the type of this prop is a number
+    progress: t.number(0, {range: [0,1]}),
+  }
+)
 
 export default class Sketch {
   constructor(options) {
@@ -66,6 +96,12 @@ export default class Sketch {
     this.render();
     this.setupResize();
     this.settings();
+
+    distortion.onValuesChange(newValues => {
+      console.log(newValues)
+
+      this.effect1.uniforms["progress"].value = newValues.progress;
+    })
   }
 
   initPost() {
@@ -143,7 +179,7 @@ export default class Sketch {
     this.time += 0.01;
     this.material.uniforms.time.value = this.time;
     this.effect1.uniforms["time"].value = this.time;
-    this.effect1.uniforms["progress"].value = this.settings.progress;
+    // this.effect1.uniforms["progress"].value = this.settings.progress;
     this.effect1.uniforms["scale"].value = this.settings.scale;
     window.requestAnimationFrame(this.render.bind(this));
     // this.renderer.render(this.scene, this.camera);

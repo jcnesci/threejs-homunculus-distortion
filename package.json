@@ -1,10 +1,12 @@
 {
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.0.1",
+    "@theatre/studio": "^0.4.7",
     "dat.gui": "^0.7.7",
     "parcel": "^2.0.1"
   },
   "dependencies": {
+    "@theatre/core": "^0.4.7",
     "three": "^0.136.0"
   }
 }
