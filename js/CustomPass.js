@@ -63,6 +63,9 @@ const CustomPass = {
 			// Add incremental variation to p (dist to center) for interesting effects...
 			vec2 p = 2. * vUv - vec2(1.);
 			p += 0.1*cos(3.*p.yx + time + vec2(1.2,3.4));
+			p += 0.1*cos(3.7*p.yx + 1.4*time + vec2(2.2,3.4));
+			p += 0.1*cos(5.*p.yx + 2.6*time + vec2(4.2,1.4));
+			p += 0.3*cos(7.*p.yx + 3.6*time + vec2(10.2,3.4));
 
 			newUV.x = mix(vUv.x, length(p), progress);
 			newUV.y = mix(vUv.y, 0., progress);

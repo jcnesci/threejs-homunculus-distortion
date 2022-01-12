@@ -135,7 +135,7 @@ export default class Sketch {
   }
 
   render() {
-    this.time += 0.05;
+    this.time += 0.01;
     this.material.uniforms.time.value = this.time;
     this.effect1.uniforms["time"].value = this.time;
     this.effect1.uniforms["progress"].value = this.settings.progress;
