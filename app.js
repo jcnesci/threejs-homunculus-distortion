@@ -131,12 +131,15 @@ export default class Sketch {
       this.scene.add(mesh);
       this.meshes.push(mesh);
       mesh.position.x = i - 1; //NB: simple positioning, not ideal.
-      mesh.position.y = -1;
-      mesh.rotation.z = Math.PI/2;
     });
   }
 
   render() {
+    //TRICK: move meshes to bottom of screen (to keep sampling bottom few pixels) but do it only as progress increases, so images start in middle of screen and final distortion is ALSO in middle of screen! (WOW)
+    this.meshes.forEach(m => {
+      m.position.y = -this.settings.progress;
+      m.rotation.z = this.settings.progress * Math.PI/2;
+    });
     this.time += 0.01;
     this.material.uniforms.time.value = this.time;
     this.effect1.uniforms["time"].value = this.time;
