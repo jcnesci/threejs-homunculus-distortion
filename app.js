@@ -127,8 +127,10 @@ export default class Sketch {
       material.uniforms.uTexture.value = t;
       let mesh = new THREE.Mesh(this.geometry, material);
       this.scene.add(mesh);
-      mesh.position.x = i - 1; //NB: simple positioning, not ideal.
       this.meshes.push(mesh);
+      mesh.position.x = i - 1; //NB: simple positioning, not ideal.
+      mesh.position.y = -1;
+      mesh.rotation.z = Math.PI/2;
     });
   }
 
