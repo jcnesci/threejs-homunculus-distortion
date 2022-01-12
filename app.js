@@ -135,9 +135,9 @@ export default class Sketch {
   }
 
   render() {
-    //TRICK: move meshes to bottom of screen (to keep sampling bottom few pixels) but do it only as progress increases, so images start in middle of screen and final distortion is ALSO in middle of screen! (WOW)
+    // TRICK: rotate image meshes as we increase progress, so they start-out unrotated but end-up rotated to get the desired distortion effect!
     this.meshes.forEach(m => {
-      m.position.y = -this.settings.progress;
+      // m.position.y = -this.settings.progress;
       m.rotation.z = this.settings.progress * Math.PI/2;
     });
     this.time += 0.01;

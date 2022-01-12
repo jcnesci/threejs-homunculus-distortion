@@ -68,7 +68,7 @@ const CustomPass = {
 			p += 0.3*cos(scale * 7.*p.yx + 3.6*time + vec2(10.2,3.4));
 
 			newUV.x = mix(vUv.x, length(p), progress);
-			newUV.y = mix(vUv.y, 0., progress);
+			newUV.y = mix(vUv.y, 0.5, progress);		// TRICK: Means we sample pixels from middle of screen (0.5)
 			vec4 color = texture2D( tDiffuse, newUV );
 			gl_FragColor = color;
 			// gl_FragColor = vec4(length(p), 0., 0., 1.);
